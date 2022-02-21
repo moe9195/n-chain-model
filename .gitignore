@@ -104,11 +104,13 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.elastomers
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+elastomers/
 
 # Spyder project settings
 .spyderproject
