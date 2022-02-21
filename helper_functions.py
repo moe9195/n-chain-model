@@ -1,6 +1,13 @@
 import numpy as np
 from math import atan
 
+def inverse_langevin(x: np.ndarray) -> np.ndarray:
+    """
+    Inverse of the langevin function for a given array of x values, using Pade approximation
+    """
+
+    return (x < 0.99) * x * (3-x ** 2) / (1 - x ** 2)
+
 def arsnorm(A: np.ndarray) -> np.ndarray:
 	'''
 	Takes a numpy array of vertices and returns the norm
@@ -26,7 +33,7 @@ def det3(matrix: np.ndarray) -> float:
             matrix[0, 2] * (matrix[1, 0] * matrix[2, 1] - matrix[2, 0] * matrix[1, 1]))
 
 
-def solid_angles(vertices: np.ndarray) -> float:
+def calculate_solid_angles(vertices: np.ndarray) -> float:
     """
     Calculate the solid angles each triangle in the verticles array using Van Oosterom formula
     """
@@ -46,7 +53,7 @@ def solid_angles(vertices: np.ndarray) -> float:
 
     return solid_angles
 
-def spherical_triangle_centroid(vertices: np.ndarray) -> np.ndarray:
+def spherical_triangle_centroids(vertices: np.ndarray) -> np.ndarray:
     """
     Calculate the coordinates of the centroid of a each spherical triangle in the vertices array
     """

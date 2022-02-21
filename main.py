@@ -1,8 +1,22 @@
 from sphere import Sphere
 from plotting import Plotter
 
-sphere = Sphere(number_of_triangles = 1000, radius = 1, triangulation_method = 'octahedron')
+experiment = [
+  ['uniaxial', 2],
+  ['uniaxial', 2.5],
+  ['uniaxial', 3]
+]
 
-plotter = Plotter()
-plotter.plot_sphere(sphere, show_quadrant = True)
+def main():
+  sphere = Sphere(radius = 1,
+                  number_of_chains = 5000,
+                  triangulation_method = 'grid')
 
+  for deformation_type, stretch_ratio in experiment:
+    sphere.deform(deformation_type, stretch_ratio)
+
+  plotter = Plotter(sphere = sphere)
+  plotter.plot_stress_strain_curve()
+
+if __name__ == '__main__':
+  main()

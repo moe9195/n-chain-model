@@ -1,6 +1,6 @@
 import numpy as np
 from math import ceil
-from helper_funcs import arsunit
+from helper_functions import arsunit
 
 def num_to_iterations(num: int) -> int:
   '''
