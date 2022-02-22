@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from sphere import Sphere
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
 class Plotter(BaseModel):
   plot_directory: str = './saved_plots/'
@@ -11,9 +12,8 @@ class Plotter(BaseModel):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.tight_layout()
-    plt.show()
     plt.savefig(self.plot_directory + name)
-    plt.close()
+    plt.show()
 
   def plot_sphere(self, show_quadrant: bool = True) -> None:
     vertices = self.sphere.vertices
@@ -31,7 +31,7 @@ class Plotter(BaseModel):
       triangle = np.vstack((v1[:,i], v2[:,i], v3[:,i], v1[:,i]))
       ax.plot(triangle[:,0], triangle[:,1], triangle[:,2], 'b-', linewidth = 0.5)
 
-    self.save_current_figure('X', 'Y', f'sphere_{self.sphere.number_of_chains}.png')
+    self.save_current_figure('X', 'Y', f'sphere_{self.sphere.triangulation_method}_{self.sphere.number_of_chains}.png')
 
   def plot_stress_strain_curve(self) -> None:
     stress_strain_curve = self.sphere.stress_strain_curve
@@ -42,7 +42,15 @@ class Plotter(BaseModel):
       plt.margins(0,0)
       plt.plot(stretch_ratio, total_force, 'k', stretch_ratio, total_unloading_force, 'k')
 
-    plt.title('Stress Strain Relation')
+    plt.title(f'Stress Strain Relation (N = {self.sphere.number_of_chains})')
     plt.grid()
-    self.save_current_figure('Stretch ratio (%)', 'Tensile force (N)', f'stress_strain_{self.sphere.number_of_chains}.png')
+    self.save_current_figure('Stretch ratio (%)', 'Tensile force (N)', f'stress_strain_{self.sphere.number_of_chains}_{time.time()}.png')
+
+  def plot_chain_length_distribution(self) -> None:
+    chain_length_distribution = self.sphere.chain_length_distribution
+
+    plt.hist(chain_length_distribution, bins = 100)
+    plt.title(f'Chain Length Distribution (N = {self.sphere.number_of_chains}, seed = {self.sphere.seed})')
+    self.save_current_figure('Chain length', 'Chain count', f'chain_length_distribution_{self.sphere.number_of_chains}_{self.sphere.seed}.png')
+
 
