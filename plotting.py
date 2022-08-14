@@ -3,6 +3,7 @@ from sphere import Sphere
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+import os
 
 class Plotter(BaseModel):
   plot_directory: str = './saved_plots/'
@@ -12,6 +13,8 @@ class Plotter(BaseModel):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.tight_layout()
+    if not os.path.exists(self.plot_directory):
+      os.makedirs(self.plot_directory)
     plt.savefig(self.plot_directory + name)
     plt.show()
 
